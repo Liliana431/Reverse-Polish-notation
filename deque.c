@@ -61,16 +61,31 @@ void push_back(struct Deque* deque, int x, int t)
 	return;
 }
 
-//взять из начала. 
-int PopFront(struct Deque* deque)
+//взять из начала
+// arr[0] - значение; arr[1] - тип
+int pop_front(struct Deque* deque, int* arr)
 {
-	
+	struct list* P;
+	P = deque->first;
+	deque->first = deque->first->next;
+	deque->first->prev = NULL;
+	arr[0] = P->data;
+	arr[1] = P->type;
+	free (P);
+	return arr;
 }
 
-//взять из конца.
-int PopBack(struct Deque* deque)
+//взять из конца
+// arr[0] - значение; arr[1] - тип
+int pop_back(struct Deque* deque, int* arr)
 {
-	
+	struct list* P;
+	P = deque->last;
+	deque->last = deque->last->prev;
+	deque->last->next = NULL;
+	arr[0] = P->data;
+	arr[1] = P->type;
+	free(P);
+	return arr;
 }
-
 
