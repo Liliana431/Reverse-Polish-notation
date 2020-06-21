@@ -5,17 +5,129 @@
 #include <stdlib.h>
 #include "deque.h"
 
-// переводит в число последовательность символов
-//возвращает массив в котором
-//arr[0] - прочитанное число; arr[1] - следующий символ
-int convert()
+//номер символа или 0 если цифра
+int convert_symbol(char symbol)
 {
+	int s;
+	switch (symbol)
+	{
+		//если символ
+	case '(':
+		s = 5;
+		break;
+	case ')':
+		s = 6;
+		break;
+	case '+':
+		s = 1;
+		break;
+	case '-':
+		s = 2;
+		break;
+	case '*':
+		s = 3;
+		break;
+	case '/':
+		s = 4;
+		break;
+		//если число
+	default:
+		s = 0;
+		break;
+	}
+	return s;
+}
 
+
+
+// переводит последовательность символов в число
+//возвращает массив в котором
+//arr[0] - прочитанное число; arr[1] - следующий символ, уже перееведенный в число
+int* convert(int* arr, char numeral)
+{
+	//чтение первой цифры 
+	int number;
+	switch (numeral)
+	{
+	case '1':
+		number = 1;
+		break;
+	case '2':
+		number = 2;
+		break;
+	case '3':
+		number = 3;
+		break;
+	case '4':
+		number = 4;
+		break;
+	case '5':
+		number = 5;
+		break;
+	case '6':
+		number = 6;
+		break;
+	case '7':
+		number = 7;
+		break;
+	case '8':
+		number = 8;
+		break;
+	case '9':
+		number = 9;
+		break;
+	}
+	// чтение последующих символов
+	char symbol;
+	while (1)
+	{
+		//если цифра
+		scanf_s("%c", &symbol);
+		switch (symbol)
+		{
+		case '1':
+			number = 10 * number + 1;
+			break;
+		case '2':
+			number = 10 * number + 2;
+			break;
+		case '3':
+			number = 10 * number + 3;
+			break;
+		case '4':
+			number = 10 * number + 4;
+			break;
+		case '5':
+			number = 10 * number + 5;
+			break;
+		case '6':
+			number = 10 * number + 6;
+			break;
+		case '7':
+			number = 10 * number + 7;
+			break;
+		case '8':
+			number = 10 * number + 8;
+			break;
+		case '9':
+			number = 10 * number + 9;
+			break;
+		case '0':
+			number = 10 * number;
+			break;
+		// если символ
+		default:
+			arr[0] = number;
+			arr[1] = convert_symbol (symbol);
+			return arr;
+			break;
+		}
+	}
 }
 
 // добавляет символ или число в дек
 // читает следующий символ, его возвращает
-int add_simbol()
+int add_symbol()
 {
 
 }
@@ -30,60 +142,34 @@ struct Deque* reading_expression()
 	//создание дека
 	struct Deque* deque1;
 	deque1 = create_deque();
-	char simbol;
-	scanf_s("%c", &simbol);
+	char symbol;
+	scanf_s("%c", &symbol);
 	//заполнение первого элемента дека
-	switch (simbol) 
+	int num;
+	num = convert_symbol(symbol);
+	if (num != 0)
 	{
-	//если первый символ
-	case '(':
 		deque1->first->type = 2;
-		deque1->first->data = 5;
-		scanf_s("%c", &simbol);
-		break;
-	case ')':
-		deque1->first->type = 2;
-		deque1->first->data = 6;
-		scanf_s("%c", &simbol);
-		break;
-	case '+':
-		deque1->first->type = 2;
-		deque1->first->data = 1;
-		scanf_s("%c", &simbol);
-		break;
-	case '-':
-		deque1->first->type = 2;
-		deque1->first->data = 2;
-		scanf_s("%c", &simbol);
-		break;
-	case '*':
-		deque1->first->type = 2;
-		deque1->first->data = 3;
-		scanf_s("%c", &simbol);
-		break;
-	case '/':
-		deque1->first->type = 2;
-		deque1->first->data = 4;
-		scanf_s("%c", &simbol);
-		break;
-	//если первое число
-	default:
-		arr = convert();
+		deque1->first->data = num;
+		scanf_s("%c", &symbol);
+	}
+	else
+	{
+		arr = convert(arr, symbol);
 		deque1->first->type = 1;
 		deque1->first->data = arr[0];
-		simbol = arr[1];
-		break;
+		symbol = arr[1];
 	}
+	/*
 	//заполнение остальных элементов
 	// пока строка не закончилась
-	while (simbol != '\n')
+	while (symbol != '\n')
 	{
 		// символ или число записывается в дек
 		//читается новый символ
-		simbol = add_simbol();
+		symbol = add_simbol();
 	}
-
+	*/
 	return deque1;
 }
-
 

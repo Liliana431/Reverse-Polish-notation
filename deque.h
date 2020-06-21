@@ -20,7 +20,7 @@ struct Deque
 //создание дека
 //в начале в деке есть одно пустое место
 //для заполнения которого push_front и push_back не подходят
-int* create_deque();
+struct Deque* create_deque();
 
 //положить x в начало
 void push_front(struct Deque* deque, int x, int t);
