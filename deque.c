@@ -4,6 +4,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 
+//элементы в деке
 struct list
 {
 	// 1 - если число; 2 - знак
@@ -25,21 +26,27 @@ struct Deque
 int* create_deque()
 {
 	struct Deque* deque;
+	//выделение памяти под 1 элемент дека
 	deque = malloc(sizeof(struct Deque));
 	deque->first = malloc(sizeof(struct list));
+	//указательи на первый и последний элемент (сейчас он один)
 	deque->last = deque->first;
+	// указатели на следующий и предыдущий элемент - NULL, т.к. их нет
 	deque->first->next = NULL;
 	deque->first->prev = NULL;
 	return deque;
-};
+}
 
 //положить x в начало
 void push_front(struct Deque* deque, int x, int t)
 {
 	struct list* P;
+	// выделение памяти для элемента дека
 	P = malloc(sizeof(struct list));
+	// записывание значения и типа
 	P->data = x;
 	P->type = t;
+	// связывание этого элемента с деком, изменение указателя на начало дека
 	P->prev = NULL;
 	P->next = deque->first;
 	deque->first->prev = P;
@@ -51,9 +58,12 @@ void push_front(struct Deque* deque, int x, int t)
 void push_back(struct Deque* deque, int x, int t)
 {
 	struct list* P;
+	// выделение памяти для элемента дека
 	P = malloc(sizeof(struct list));
+	// записывание значения и типа
 	P->data = x;
 	P->type = t;
+	// связывание этого элемента с деком, изменение указателя на конец дека
 	P->next = NULL;
 	P->prev = deque->last;
 	deque->last->next = P;
@@ -63,29 +73,36 @@ void push_back(struct Deque* deque, int x, int t)
 
 //взять из начала
 // arr[0] - значение; arr[1] - тип
-int pop_front(struct Deque* deque, int* arr)
+int* pop_front(struct Deque* deque, int* arr)
 {
 	struct list* P;
+	// в Р записывается указатель на первый элемент
 	P = deque->first;
+	// изменение указателя на начало
 	deque->first = deque->first->next;
 	deque->first->prev = NULL;
+	// запись значения и типа элемента
 	arr[0] = P->data;
 	arr[1] = P->type;
+	// удаление Р
 	free (P);
 	return arr;
 }
 
 //взять из конца
 // arr[0] - значение; arr[1] - тип
-int pop_back(struct Deque* deque, int* arr)
+int* pop_back(struct Deque* deque, int* arr)
 {
 	struct list* P;
+	// в Р записывается указатель на последний элемент
 	P = deque->last;
+	// изменение указателя на конец
 	deque->last = deque->last->prev;
 	deque->last->next = NULL;
+	// запись значения и типа элемент
 	arr[0] = P->data;
 	arr[1] = P->type;
+	// удаление Р
 	free(P);
 	return arr;
 }
-
