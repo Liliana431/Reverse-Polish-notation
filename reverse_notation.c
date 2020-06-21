@@ -5,6 +5,37 @@
 #include <stdlib.h>
 #include "deque.h"
 
+char convert_number(int number)
+{
+	char s;
+	switch (number)
+	{
+		//если символ
+	case 5:
+		s = '(';
+		break;
+	case 6:
+		s = ')';
+		break;
+	case 1:
+		s = '+';
+		break;
+	case 2:
+		s = '-';
+		break;
+	case 3:
+		s = '*';
+		break;
+	case 4:
+		s = '/';
+		break;
+	case 7:
+		s = '\n';
+		break;
+	}
+	return s;
+}
+
 //номер символа или 0 если цифра
 int convert_symbol(char symbol)
 {
@@ -30,6 +61,9 @@ int convert_symbol(char symbol)
 	case '/':
 		s = 4;
 		break;
+	case '\n':
+		s = 7;
+		break;
 		//если число
 	default:
 		s = 0;
@@ -42,7 +76,7 @@ int convert_symbol(char symbol)
 
 // переводит последовательность символов в число
 //возвращает массив в котором
-//arr[0] - прочитанное число; arr[1] - следующий символ, уже перееведенный в число
+//arr[0] - прочитанное число; arr[1] - следующий символ, перееведенный в число
 int* convert(int* arr, char numeral)
 {
 	//чтение первой цифры 
@@ -127,9 +161,27 @@ int* convert(int* arr, char numeral)
 
 // добавляет символ или число в дек
 // читает следующий символ, его возвращает
-int add_symbol()
+char add_symbol(struct Deque* deque1, char symbol)
 {
-
+	int data, * arr;
+	arr = malloc(2 * sizeof(int));
+	char new_symbol;
+	// номер символа
+	data = convert_symbol(symbol);
+	//если это символ - добавить
+	if (data != 0)
+	{
+		push_back(deque1, data, 2);
+		scanf_s("%c", &new_symbol);
+	}
+	else
+	//перевести в число и добавить
+	{
+		arr = convert(arr, symbol);
+		push_back(deque1, arr[0], 1);
+		new_symbol = convert_number(arr[1]);
+	}
+	return new_symbol;
 }
 
 
@@ -158,18 +210,15 @@ struct Deque* reading_expression()
 		arr = convert(arr, symbol);
 		deque1->first->type = 1;
 		deque1->first->data = arr[0];
-		symbol = arr[1];
+		symbol = convert_number(arr[1]);
 	}
-	/*
 	//заполнение остальных элементов
 	// пока строка не закончилась
 	while (symbol != '\n')
 	{
 		// символ или число записывается в дек
 		//читается новый символ
-		symbol = add_simbol();
+		symbol = add_symbol(deque1, symbol);
 	}
-	*/
 	return deque1;
 }
-
