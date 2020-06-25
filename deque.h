@@ -36,4 +36,12 @@ int* pop_front(struct Deque* deque, int* arr);
 // arr[0] - значение; arr[1] - тип
 int* pop_back(struct Deque* deque, int* arr);
 
+// прочитать из начала
+// arr[0] - значение; arr[1] - тип
+int* top_front(struct Deque* deque, int* arr);
+
+// прочитать из конца
+// arr[0] - значение; arr[1] - тип
+int* top_back(struct Deque* deque, int* arr);
+
 #endif

@@ -184,7 +184,7 @@ char add_symbol(struct Deque* deque1, char symbol)
 	return new_symbol;
 }
 
-
+// чтение выражения
 struct Deque* reading_expression()
 {
 	int* arr;
@@ -222,3 +222,102 @@ struct Deque* reading_expression()
 	}
 	return deque1;
 }
+
+// по таблице определяется куда какой знак записывать
+// по строкам - предыдущий незаписанный символ, по столбцам - текущий
+// 1 - записать в дополнительный дек
+// 2 - из доп. дека в конец новой записи
+// 3 - удалить и последний незаписанный, и текущий символ
+// 4 - выражение преобразовано
+// 0 - ошибка ввода 
+int what_do(int last_element, int first_element)
+{
+	int matrix[6][7] = { {4, 1, 1, 1, 1, 1, 0}, 
+						 {2, 2, 2, 1, 1, 1, 2}, 
+						 {2, 2, 2, 1, 1, 1, 2}, 
+						 {2, 2, 2, 2, 2, 1, 2}, 
+						 {2, 2, 2, 2, 2, 1, 2}, 
+						 {0, 1, 1, 1, 1, 1, 3} };
+	return matrix[last_element][first_element];
+}
+
+// обратная запись
+struct Deque* revers_notation(struct Deque* normal_notation)
+{
+	// deque1 - вспомогательный дек
+	struct Deque* deque1,* rev_Polish_not;
+	deque1 = create_deque();
+	rev_Polish_not = create_deque();
+	// массивы, в которых записываются 
+	// аrr[0] - значение; arr[1] - тип
+	// first_element - первый в нормальной записи, last_element - последний во вспомогательном
+	int* first_element,* last_element;
+	first_element = malloc(2 * sizeof(int));
+	last_element = malloc(2 * sizeof(int));
+	//заполнение первого элемента
+	deque1->first->data = 0;
+	deque1->first->type = 2;
+	rev_Polish_not->first->data = 0;
+	rev_Polish_not->first->type = 2;
+	// добавлен элемен, показывающий, что строка закончена
+	push_back(normal_notation, 0, 2);
+	// сюда записывается соответствующее значение из таблицы
+	int k = 0;
+	//пока выражение не преобразовано
+	while (k != 4)
+	{
+		first_element = top_front(normal_notation, first_element);
+		// если прочитано число
+		if (first_element[1] == 1)
+		{
+			//просто записывается в конец новой записи
+			first_element = pop_front(normal_notation, first_element);
+			push_back(rev_Polish_not, first_element[0], 1);
+		}
+		else
+		{
+			// читается предыдущий и выполняется нужное действие
+			last_element = top_back(deque1, last_element);
+			k = what_do(last_element[0], first_element[0]);
+			switch (k)
+			{
+			case 1:
+				first_element = pop_front(normal_notation, first_element);
+				push_back(deque1, first_element[0], 2);
+				break;
+			case 2:
+				last_element = pop_back(deque1, last_element);
+				push_back(rev_Polish_not, last_element[0], 2);
+				break;
+			case 3:
+				first_element = pop_front(normal_notation, first_element);
+				last_element = pop_back(deque1, last_element);
+				break;
+			case 4:
+				break;
+			}
+		}
+		
+	}
+	// удаляется лишний элемент в начале
+	first_element = pop_front(rev_Polish_not, first_element);
+	return rev_Polish_not;
+}
+
+// вывод выражения
+void output(struct Deque* deque1)
+{
+	struct list* P;
+	P = deque1->first;
+	printf("%d", P->data);
+	while (P->next != NULL)
+	{
+		P = P->next;
+		if(P->type == 1)
+			printf("%d ", P->data);
+		else 
+			printf("%c ", convert_number(P->data));
+	}
+	return;
+}
+

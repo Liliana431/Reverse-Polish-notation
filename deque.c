@@ -106,3 +106,21 @@ int* pop_back(struct Deque* deque, int* arr)
 	free(P);
 	return arr;
 }
+
+// прочитать из начала
+// arr[0] - значение; arr[1] - тип
+int* top_front(struct Deque* deque, int* arr)
+{
+	arr[0] = deque->first->data;
+	arr[1] = deque->first->type;
+	return arr;
+}
+
+// прочитать из конца
+// arr[0] - значение; arr[1] - тип
+int* top_back(struct Deque* deque, int* arr)
+{
+	arr[0] = deque->last->data;
+	arr[1] = deque->last->type;
+	return arr;
+}
