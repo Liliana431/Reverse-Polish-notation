@@ -38,7 +38,7 @@ int* create_deque()
 }
 
 //положить x в начало
-void push_front(struct Deque* deque, int x, int t)
+void push_front(struct Deque* Deque, int x, int t)
 {
 	struct list* P;
 	// выделение пам€ти дл€ элемента дека
@@ -48,14 +48,14 @@ void push_front(struct Deque* deque, int x, int t)
 	P->type = t;
 	// св€зывание этого элемента с деком, изменение указател€ на начало дека
 	P->prev = NULL;
-	P->next = deque->first;
-	deque->first->prev = P;
-	deque->first = P;
+	P->next = Deque->first;
+	Deque->first->prev = P;
+	Deque->first = P;
 	return;
 }
 
 //положить x в конец
-void push_back(struct Deque* deque, int x, int t)
+void push_back(struct Deque* Deque, int x, int t)
 {
 	struct list* P;
 	// выделение пам€ти дл€ элемента дека
@@ -65,22 +65,22 @@ void push_back(struct Deque* deque, int x, int t)
 	P->type = t;
 	// св€зывание этого элемента с деком, изменение указател€ на конец дека
 	P->next = NULL;
-	P->prev = deque->last;
-	deque->last->next = P;
-	deque->last = P;
+	P->prev = Deque->last;
+	Deque->last->next = P;
+	Deque->last = P;
 	return;
 }
 
 //вз€ть из начала
 // arr[0] - значение; arr[1] - тип
-int* pop_front(struct Deque* deque, int* arr)
+int* pop_front(struct Deque* Deque, int* arr)
 {
 	struct list* P;
 	// в – записываетс€ указатель на первый элемент
-	P = deque->first;
+	P = Deque->first;
 	// изменение указател€ на начало
-	deque->first = deque->first->next;
-	deque->first->prev = NULL;
+	Deque->first = Deque->first->next;
+	Deque->first->prev = NULL;
 	// запись значени€ и типа элемента
 	arr[0] = P->data;
 	arr[1] = P->type;
@@ -91,14 +91,14 @@ int* pop_front(struct Deque* deque, int* arr)
 
 //вз€ть из конца
 // arr[0] - значение; arr[1] - тип
-int* pop_back(struct Deque* deque, int* arr)
+int* pop_back(struct Deque* Deque, int* arr)
 {
 	struct list* P;
 	// в – записываетс€ указатель на последний элемент
-	P = deque->last;
+	P = Deque->last;
 	// изменение указател€ на конец
-	deque->last = deque->last->prev;
-	deque->last->next = NULL;
+	Deque->last = Deque->last->prev;
+	Deque->last->next = NULL;
 	// запись значени€ и типа элемент
 	arr[0] = P->data;
 	arr[1] = P->type;
@@ -109,18 +109,18 @@ int* pop_back(struct Deque* deque, int* arr)
 
 // прочитать из начала
 // arr[0] - значение; arr[1] - тип
-int* top_front(struct Deque* deque, int* arr)
+int* top_front(struct Deque* Deque, int* arr)
 {
-	arr[0] = deque->first->data;
-	arr[1] = deque->first->type;
+	arr[0] = Deque->first->data;
+	arr[1] = Deque->first->type;
 	return arr;
 }
 
 // прочитать из конца
 // arr[0] - значение; arr[1] - тип
-int* top_back(struct Deque* deque, int* arr)
+int* top_back(struct Deque* Deque, int* arr)
 {
-	arr[0] = deque->last->data;
-	arr[1] = deque->last->type;
+	arr[0] = Deque->last->data;
+	arr[1] = Deque->last->type;
 	return arr;
 }

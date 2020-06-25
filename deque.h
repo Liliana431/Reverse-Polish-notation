@@ -23,25 +23,25 @@ struct Deque
 struct Deque* create_deque();
 
 //положить x в начало
-void push_front(struct Deque* deque, int x, int t);
+void push_front(struct Deque* Deque, int x, int t);
 
 //положить x в конец
-void push_back(struct Deque* deque, int x, int t);
+void push_back(struct Deque* Deque, int x, int t);
 
 //взять из начала
 // arr[0] - значение; arr[1] - тип
-int* pop_front(struct Deque* deque, int* arr);
+int* pop_front(struct Deque* Deque, int* arr);
 
 //взять из конца
 // arr[0] - значение; arr[1] - тип
-int* pop_back(struct Deque* deque, int* arr);
+int* pop_back(struct Deque* Deque, int* arr);
 
 // прочитать из начала
 // arr[0] - значение; arr[1] - тип
-int* top_front(struct Deque* deque, int* arr);
+int* top_front(struct Deque* Deque, int* arr);
 
 // прочитать из конца
 // arr[0] - значение; arr[1] - тип
-int* top_back(struct Deque* deque, int* arr);
+int* top_back(struct Deque* Deque, int* arr);
 
 #endif

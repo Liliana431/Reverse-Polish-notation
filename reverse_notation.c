@@ -161,7 +161,7 @@ int* convert(int* arr, char numeral)
 
 // добавляет символ или число в дек
 // читает следующий символ, его возвращает
-char add_symbol(struct Deque* deque1, char symbol)
+char add_symbol(struct Deque* Deque, char symbol)
 {
 	int data, * arr;
 	arr = malloc(2 * sizeof(int));
@@ -171,14 +171,14 @@ char add_symbol(struct Deque* deque1, char symbol)
 	//если это символ - добавить
 	if (data != 0)
 	{
-		push_back(deque1, data, 2);
+		push_back(Deque, data, 2);
 		scanf_s("%c", &new_symbol);
 	}
 	else
 	//перевести в число и добавить
 	{
 		arr = convert(arr, symbol);
-		push_back(deque1, arr[0], 1);
+		push_back(Deque, arr[0], 1);
 		new_symbol = convert_number(arr[1]);
 	}
 	return new_symbol;
@@ -192,8 +192,8 @@ struct Deque* reading_expression()
 	//arr[0] - прочитанное число; arr[1] - следующий символ
 	arr = malloc(2 * sizeof(int));
 	//создание дека
-	struct Deque* deque1;
-	deque1 = create_deque();
+	struct Deque* Deque;
+	Deque = create_deque();
 	char symbol;
 	scanf_s("%c", &symbol);
 	//заполнение первого элемента дека
@@ -201,15 +201,15 @@ struct Deque* reading_expression()
 	num = convert_symbol(symbol);
 	if (num != 0)
 	{
-		deque1->first->type = 2;
-		deque1->first->data = num;
+		Deque->first->type = 2;
+		Deque->first->data = num;
 		scanf_s("%c", &symbol);
 	}
 	else
 	{
 		arr = convert(arr, symbol);
-		deque1->first->type = 1;
-		deque1->first->data = arr[0];
+		Deque->first->type = 1;
+		Deque->first->data = arr[0];
 		symbol = convert_number(arr[1]);
 	}
 	//заполнение остальных элементов
@@ -218,9 +218,9 @@ struct Deque* reading_expression()
 	{
 		// символ или число записывается в дек
 		//читается новый символ
-		symbol = add_symbol(deque1, symbol);
+		symbol = add_symbol(Deque, symbol);
 	}
-	return deque1;
+	return Deque;
 }
 
 // по таблице определяется куда какой знак записывать
@@ -242,7 +242,7 @@ int what_do(int last_element, int first_element)
 }
 
 // обратная запись
-struct Deque* revers_notation(struct Deque* normal_notation)
+struct Deque* RPN(struct Deque* normal_notation)
 {
 	// deque1 - вспомогательный дек
 	struct Deque* deque1,* rev_Polish_not;
@@ -305,11 +305,11 @@ struct Deque* revers_notation(struct Deque* normal_notation)
 }
 
 // вывод выражения
-void output(struct Deque* deque1)
+void output(struct Deque* Deque)
 {
 	struct list* P;
-	P = deque1->first;
-	printf("%d", P->data);
+	P = Deque->first;
+	printf("%d ", P->data);
 	while (P->next != NULL)
 	{
 		P = P->next;
