@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include "deque.h"
 
+// перевод из номера в символ
 char convert_number(int number)
 {
 	char s;
 	switch (number)
 	{
-		//если символ
 	case 5:
 		s = '(';
 		break;
@@ -30,10 +30,14 @@ char convert_number(int number)
 	case 7:
 		s = '\n';
 		break;
+	case 8:
+		s = 'x';
+		break;
 	}
 	return s;
 }
 
+//перевод из символа в его номер
 //номер символа или 0 если цифра
 int convert_symbol(char symbol)
 {
@@ -61,6 +65,9 @@ int convert_symbol(char symbol)
 		break;
 	case '\n':
 		s = 7;
+		break;
+	case 'x':
+		s = 8;
 		break;
 		//если число
 	default:
@@ -266,11 +273,11 @@ struct Deque* RPN(struct Deque* normal_notation)
 	{
 		first_element = top_front(normal_notation, first_element);
 		// если прочитано число
-		if (first_element[1] == 1)
+		if (first_element[1] == 1 || (first_element[1] == 2 && first_element[0] == 8))
 		{
 			//просто записывается в конец новой записи
 			first_element = pop_front(normal_notation, first_element);
-			push_back(rev_Polish_not, first_element[0], 1);
+			push_back(rev_Polish_not, first_element[0], first_element[1]);
 		}
 		else
 		{
@@ -307,7 +314,10 @@ void output(struct Deque* Deque)
 {
 	struct list* P;
 	P = Deque->first;
-	printf("%d ", P->data);
+	if (P->type == 1)
+		printf("%d ", P->data);
+	else
+		printf("%c ", convert_number(P->data));
 	while (P->next != NULL)
 	{
 		P = P->next;

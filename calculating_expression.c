@@ -1,8 +1,63 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "deque.h"
 #include "reverse_notation.h"
+
+//заметна параметра
+void replacing_parameter(struct Deque* Deque)
+{
+	setlocale(LC_ALL, "RUS");
+	struct list* P;
+	P = Deque->first;
+	//если найдется х, k ббудет равно 1
+	int k = 0;
+	// проверка первого символа
+	if (P->type == 2 && P->data == 8)
+	{
+		k = 1;
+		printf("\nвведите значение х: ");
+	}
+	//еесли он не х - все остальные
+	else
+		while (P->next != NULL)
+		{
+			P = P->next;
+			// если х
+			if (P->type == 2 && P->data == 8)
+			{
+				// меняется k на 1
+				k = 1;
+				printf("\nвведите значение х: ");
+				//цикл заканчивается
+				break;
+			}
+		}
+	// если х есть
+	if (k == 1)
+	{
+		//чтение его значения
+		scanf_s("%d", &k);
+		P = Deque->first;
+		// замена параметра на число
+		if (P->type == 2 && P->data == 8)
+		{
+			P->data = k;
+			P->type = 1;
+		}
+		while (P->next != NULL)
+		{
+			P = P->next;
+			if (P->type == 2 && P->data == 8)
+			{
+				P->data = k;
+				P->type = 1;
+			}
+		}
+	}
+	return;
+}
 
 //вычисление одного действия выражения
 int value(int a, int b, int sign)
@@ -29,6 +84,7 @@ int value(int a, int b, int sign)
 //вычисление выражения
 int calculation(struct Deque* expression)
 {
+	replacing_parameter(expression);
 	// вспомогательный дек
 	struct Deque* Deque;
 	Deque = create_deque();

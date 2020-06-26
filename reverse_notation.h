@@ -2,8 +2,10 @@
 #ifndef reverse_notation
 #define reverse_notation
 
+// перевод из номера в символ
 char convert_number(int number);
 
+//перевод из символа в его номер
 //номер символа или 0 если цифра
 int convert_symbol(char symbol);
 
