@@ -82,46 +82,12 @@ int convert_symbol(char symbol)
 // переводит последовательность символов в число
 //возвращает массив в котором
 //arr[0] - прочитанное число; arr[1] - следующий символ, перееведенный в число
-int* convert(int* arr, char numeral)
+int* convert(int* arr, char symbol)
 {
-	//чтение первой цифры 
-	int number;
-	switch (numeral)
-	{
-	case '1':
-		number = 1;
-		break;
-	case '2':
-		number = 2;
-		break;
-	case '3':
-		number = 3;
-		break;
-	case '4':
-		number = 4;
-		break;
-	case '5':
-		number = 5;
-		break;
-	case '6':
-		number = 6;
-		break;
-	case '7':
-		number = 7;
-		break;
-	case '8':
-		number = 8;
-		break;
-	case '9':
-		number = 9;
-		break;
-	}
-	// чтение последующих символов
-	char symbol;
+	int number = 0;
 	while (1)
 	{
 		//если цифра
-		scanf_s("%c", &symbol);
 		switch (symbol)
 		{
 		case '1':
@@ -161,12 +127,13 @@ int* convert(int* arr, char numeral)
 			return arr;
 			break;
 		}
+		scanf_s("%c", &symbol);
 	}
 }
 
 // добавляет символ или число в дек
 // читает следующий символ, его возвращает
-char add_symbol(struct Deque* Deque, char symbol)
+char add_symbol(struct deque* deque, char symbol)
 {
 	int data, * arr;
 	arr = malloc(2 * sizeof(int));
@@ -176,29 +143,29 @@ char add_symbol(struct Deque* Deque, char symbol)
 	//если это символ - добавить
 	if (data != 0)
 	{
-		push_back(Deque, data, 2);
+		push_back(deque, data, 2);
 		scanf_s("%c", &new_symbol);
 	}
 	else
 	//перевести в число и добавить
 	{
 		arr = convert(arr, symbol);
-		push_back(Deque, arr[0], 1);
+		push_back(deque, arr[0], 1);
 		new_symbol = convert_number(arr[1]);
 	}
 	return new_symbol;
 }
 
 // чтение выражения
-struct Deque* reading_expression()
+struct deque* reading_expression()
 {
 	int* arr;
 	// массив, в который записываются после перевода в число
 	//arr[0] - прочитанное число; arr[1] - следующий символ
 	arr = malloc(2 * sizeof(int));
 	//создание дека
-	struct Deque* Deque;
-	Deque = create_deque();
+	struct deque* deque;
+	deque = create_deque();
 	char symbol;
 	scanf_s("%c", &symbol);
 	//заполнение первого элемента дека
@@ -206,15 +173,15 @@ struct Deque* reading_expression()
 	num = convert_symbol(symbol);
 	if (num != 0)
 	{
-		Deque->first->type = 2;
-		Deque->first->data = num;
+		deque->first->type = 2;
+		deque->first->data = num;
 		scanf_s("%c", &symbol);
 	}
 	else
 	{
 		arr = convert(arr, symbol);
-		Deque->first->type = 1;
-		Deque->first->data = arr[0];
+		deque->first->type = 1;
+		deque->first->data = arr[0];
 		symbol = convert_number(arr[1]);
 	}
 	//заполнение остальных элементов
@@ -223,9 +190,9 @@ struct Deque* reading_expression()
 	{
 		// символ или число записывается в дек
 		//читается новый символ
-		symbol = add_symbol(Deque, symbol);
+		symbol = add_symbol(deque, symbol);
 	}
-	return Deque;
+	return deque;
 }
 
 // по таблице определяется куда какой знак записывать
@@ -247,12 +214,12 @@ int what_do(int last_element, int first_element)
 }
 
 // обратная запись
-struct Deque* RPN(struct Deque* normal_notation)
+struct deque* RPN(struct deque* normal_notation)
 {
-	// deque1 - вспомогательный дек
-	struct Deque* deque1,* rev_Polish_not;
-	deque1 = create_deque();
-	rev_Polish_not = create_deque();
+	// deque - вспомогательный дек
+	struct deque* deque,* rev_polish_notat;
+	deque = create_deque();
+	rev_polish_notat = create_deque();
 	// массивы, в которых записываются 
 	// аrr[0] - значение; arr[1] - тип
 	// first_element - первый в нормальной записи, last_element - последний во вспомогательном
@@ -260,10 +227,10 @@ struct Deque* RPN(struct Deque* normal_notation)
 	first_element = malloc(2 * sizeof(int));
 	last_element = malloc(2 * sizeof(int));
 	//заполнение первого элемента
-	deque1->first->data = 0;
-	deque1->first->type = 2;
-	rev_Polish_not->first->data = 0;
-	rev_Polish_not->first->type = 2;
+	deque->first->data = 0;
+	deque->first->type = 2;
+	rev_polish_notat->first->data = 0;
+	rev_polish_notat->first->type = 2;
 	// добавлен элемен, показывающий, что строка закончена
 	push_back(normal_notation, 0, 2);
 	// сюда записывается соответствующее значение из таблицы
@@ -277,26 +244,26 @@ struct Deque* RPN(struct Deque* normal_notation)
 		{
 			//просто записывается в конец новой записи
 			first_element = pop_front(normal_notation, first_element);
-			push_back(rev_Polish_not, first_element[0], first_element[1]);
+			push_back(rev_polish_notat, first_element[0], first_element[1]);
 		}
 		else
 		{
 			// читается предыдущий и выполняется нужное действие
-			last_element = top_back(deque1, last_element);
+			last_element = top_back(deque, last_element);
 			k = what_do(last_element[0], first_element[0]);
 			switch (k)
 			{
 			case 1:
 				first_element = pop_front(normal_notation, first_element);
-				push_back(deque1, first_element[0], 2);
+				push_back(deque, first_element[0], 2);
 				break;
 			case 2:
-				last_element = pop_back(deque1, last_element);
-				push_back(rev_Polish_not, last_element[0], 2);
+				last_element = pop_back(deque, last_element);
+				push_back(rev_polish_notat, last_element[0], 2);
 				break;
 			case 3:
 				first_element = pop_front(normal_notation, first_element);
-				last_element = pop_back(deque1, last_element);
+				last_element = pop_back(deque, last_element);
 				break;
 			case 4:
 				break;
@@ -305,15 +272,15 @@ struct Deque* RPN(struct Deque* normal_notation)
 		
 	}
 	// удаляется лишний элемент в начале
-	first_element = pop_front(rev_Polish_not, first_element);
-	return rev_Polish_not;
+	first_element = pop_front(rev_polish_notat, first_element);
+	return rev_polish_notat;
 }
 
 // вывод выражения
-void output(struct Deque* Deque)
+void output(struct deque* deque)
 {
 	struct list* P;
-	P = Deque->first;
+	P = deque->first;
 	if (P->type == 1)
 		printf("%d ", P->data);
 	else

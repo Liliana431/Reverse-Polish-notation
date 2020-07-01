@@ -1,6 +1,6 @@
 
-#ifndef reverse_notation
-#define reverse_notation
+#ifndef Reverse_notation
+#define Reverse_notation
 
 // перевод из номера в символ
 char convert_number(int number);
@@ -16,10 +16,10 @@ int* convert(int* arr, char numeral);
 
 // добавляет символ или число в дек
 // читает следующий символ, его возвращает
-char add_symbol(struct Deque* deque1, char symbol);
+char add_symbol(struct deque* deque1, char symbol);
 
 // чтение выражения
-struct Deque* reading_expression();
+struct deque* reading_expression();
 
 // по таблице определяется куда какой знак записывать
 // по строкам - предыдущий незаписанный символ, по столбцам - текущий
@@ -31,9 +31,13 @@ struct Deque* reading_expression();
 int what_do(int last_element, int first_element);
 
 // обратная запись
-struct Deque* RPN(struct Deque* normal_notation);
+// записывается в дек так, что: 
+//число записываеся как число с типом 1
+//для аифметическх знаков, скобок, параметра и перевода строки записывается соответствующий номер с типом 2 
+//+=1; -=2; *=3; /=4; (=5; )=6; \n=7; x=8;
+struct deque* RPN(struct deque* normal_notation);
 
 // вывод выражения
-void output(struct Deque* deque1);
+void output(struct deque* deque1);
 
 #endif

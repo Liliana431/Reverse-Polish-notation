@@ -6,55 +6,29 @@
 #include "reverse_notation.h"
 
 //заметна параметра
-void replacing_parameter(struct Deque* Deque)
+void replacing_parameter(struct deque* deque)
 {
 	setlocale(LC_ALL, "RUS");
-	struct list* P;
-	P = Deque->first;
-	//если найдется х, k ббудет равно 1
-	int k = 0;
-	// проверка первого символа
-	if (P->type == 2 && P->data == 8)
+	struct list* p;
+	p = deque->first;
+	//k - обозначает первое ли появление х или нет
+	int k = 0, x;
+	while (p->next != NULL)
 	{
-		k = 1;
-		printf("\nвведите значение х: ");
-	}
-	//еесли он не х - все остальные
-	else
-		while (P->next != NULL)
+		// если х
+		if (p->type == 2 && p->data == 8)
 		{
-			P = P->next;
-			// если х
-			if (P->type == 2 && P->data == 8)
+			// если это первое появление х
+			if (k == 0)
 			{
-				// меняется k на 1
 				k = 1;
-				printf("\nвведите значение х: ");
-				//цикл заканчивается
-				break;
+				printf("введите значение х: ");
+				scanf_s("%d", &x);
 			}
+			p->data = x;
+			p->type = 1;
 		}
-	// если х есть
-	if (k == 1)
-	{
-		//чтение его значения
-		scanf_s("%d", &k);
-		P = Deque->first;
-		// замена параметра на число
-		if (P->type == 2 && P->data == 8)
-		{
-			P->data = k;
-			P->type = 1;
-		}
-		while (P->next != NULL)
-		{
-			P = P->next;
-			if (P->type == 2 && P->data == 8)
-			{
-				P->data = k;
-				P->type = 1;
-			}
-		}
+		p = p->next;
 	}
 	return;
 }
@@ -82,15 +56,15 @@ int value(int a, int b, int sign)
 }
 
 //вычисление выражения
-int calculation(struct Deque* expression)
+int calculation(struct deque* expression)
 {
 	replacing_parameter(expression);
 	// вспомогательный дек
-	struct Deque* Deque;
-	Deque = create_deque();
+	struct deque* deque;
+	deque = create_deque();
 	//заполнение первого элемента
-	Deque->first->data = 0;
-	Deque->first->type = 2;
+	deque->first->data = 0;
+	deque->first->type = 2;
 	// окончание строчки
 	push_back(expression, 0, 2);
 	// arr - элемент из дека с выражением
@@ -105,16 +79,16 @@ int calculation(struct Deque* expression)
 		// если это число
 		if (arr[1] == 1)
 			// записать в дек
-			push_back(Deque, arr[0], 1);
+			push_back(deque, arr[0], 1);
 		//если символ
 		else
 		{
 			// посчитать одно действие
-			number1 = pop_back(Deque, number1);
-			number2 = pop_back(Deque, number2);
-			push_back(Deque, value(number2[0], number1[0], arr[0]), 1);
+			number1 = pop_back(deque, number1);
+			number2 = pop_back(deque, number2);
+			push_back(deque, value(number2[0], number1[0], arr[0]), 1);
 		}
 	}
-	arr = pop_back(Deque, arr);
+	arr = pop_back(deque, arr);
 	return arr[0];
 }
