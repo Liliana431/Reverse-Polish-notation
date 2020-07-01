@@ -234,9 +234,9 @@ struct deque* RPN(struct deque* normal_notation)
 	// добавлен элемен, показывающий, что строка закончена
 	push_back(normal_notation, 0, 2);
 	// сюда записывается соответствующее значение из таблицы
-	int k = 0;
+	int k = -1;
 	//пока выражение не преобразовано
-	while (k != 4)
+	while (k != 4 && k != 0)
 	{
 		first_element = top_front(normal_notation, first_element);
 		// если прочитано число
@@ -267,9 +267,17 @@ struct deque* RPN(struct deque* normal_notation)
 				break;
 			case 4:
 				break;
+			case 0:
+				printf("ошибка ввода\n");
+				break;
 			}
 		}
 		
+	}
+	if (k == 0)
+	{
+		rev_polish_notat->first->type = 0;
+		return rev_polish_notat;
 	}
 	// удаляется лишний элемент в начале
 	first_element = pop_front(rev_polish_notat, first_element);

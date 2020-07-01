@@ -16,6 +16,8 @@ void main()
 	deque = reading_expression();
 	//перевод в обратную польскую запись
 	deque = RPN(deque);
+	if (deque->first->type == 0)
+		return;
 	//вывод обратной польской записи
 	printf("обратная польская запись: \n");
 	output(deque);
