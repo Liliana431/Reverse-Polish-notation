@@ -153,6 +153,7 @@ char add_symbol(struct deque* deque, char symbol)
 		push_back(deque, arr[0], 1);
 		new_symbol = convert_number(arr[1]);
 	}
+	free(arr);
 	return new_symbol;
 }
 
@@ -192,6 +193,7 @@ struct deque* reading_expression()
 		//читается новый символ
 		symbol = add_symbol(deque, symbol);
 	}
+	free(arr);
 	return deque;
 }
 
@@ -274,13 +276,16 @@ struct deque* RPN(struct deque* normal_notation)
 		}
 		
 	}
+	free(last_element);
 	if (k == 0)
 	{
 		rev_polish_notat->first->type = 0;
+		free(first_element);
 		return rev_polish_notat;
 	}
 	// удаляется лишний элемент в начале
 	first_element = pop_front(rev_polish_notat, first_element);
+	free(first_element);
 	return rev_polish_notat;
 }
 
